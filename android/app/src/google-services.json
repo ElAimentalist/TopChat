@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "260364809272-firkb518nds38ttqg384vsq3miortscs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.topchat_ui",
+            "certificate_hash": "a81c439e3f3a71618b2fa383cd0a1c9ccb46abeb"
+          }
+        },
+        {
           "client_id": "260364809272-49tavlvg0t8thldkkqb2eebkg763c5hp.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "260364809272-49tavlvg0t8thldkkqb2eebkg763c5hp.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "260364809272-huiu2a8mqs5co41d2c6o2sggcbk961i7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.topchatUi"
+              }
             }
           ]
         }

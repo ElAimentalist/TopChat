@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../colors.dart';
+import '../features/select_contacts/screens/select_contacts_screen.dart';
 import '../widgets/contacts_list.dart';
 
 class MobileScreenLayout extends StatelessWidget {
@@ -8,7 +9,7 @@ class MobileScreenLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -53,12 +54,17 @@ class MobileScreenLayout extends StatelessWidget {
               Tab(
                 text: 'WALLET',
               ),
+              Tab(
+                text: 'MORE',
+              ),
             ],
           ),
         ),
         body: const ContactsList(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, SelectContactsScreen.routeName);
+          },
           backgroundColor: tabColor,
           child: const Icon(
             Icons.comment,
