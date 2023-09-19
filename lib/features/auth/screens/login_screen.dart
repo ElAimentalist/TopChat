@@ -27,9 +27,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void pickCountry() {
     showCountryPicker(
         context: context,
-        onSelect: (Country _country) {
+        onSelect: (Country pickedcountry) {
           setState(() {
-            country = _country;
+            country = pickedcountry;
           });
         });
   }

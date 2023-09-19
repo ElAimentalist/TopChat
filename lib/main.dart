@@ -7,7 +7,6 @@ import 'package:topchat_ui/router.dart';
 import './colors.dart';
 import './features/landing/screens/landing_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '././screens/mobile_chat_screen.dart';
 import '././screens/mobile_screen_layout.dart';
 import 'common/widgets/error.dart';
 

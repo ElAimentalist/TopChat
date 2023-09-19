@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:topchat_ui/common/utils/utils.dart';
 
 import '../../../models/user_model.dart';
+import '../../chat/screens/mobile_chat_screen.dart';
 
 final selectContactRepositoryProvider = Provider(
   (ref) => SelectContactRepository(
@@ -38,7 +39,24 @@ class SelectContactRepository {
 
       for (var document in userCollection.docs) {
         var userData = UserModel.fromMap(document.data());
-        print(selectedContact.phones[0].number);
+        String selectedPhoneNum = selectedContact.phones[0].number.replaceAll(
+          ' ',
+          '',
+        );
+        if (selectedPhoneNum == userData.phoneNumber) {
+          isFound = true;
+          Navigator.pushNamed(context, MobileChatScreen.routeName, arguments: {
+            'name': userData.name,
+            'uid': userData.uid,
+          },
+          );
+        }
+      }
+
+      if (!isFound) {
+        showSnackBar(
+            context: context,
+            content: 'This number does not exist on this app.');
       }
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
