@@ -1,12 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:topchat_ui/features/chat/controller/chat_controller.dart';
 import '../../../common/widgets/loader.dart';
 import '../../../info.dart';
-import '../../../widgets/my_message_card.dart';
-import '../../../widgets/sender_message_card.dart';
+import '../widgets/my_message_card.dart';
+import '../widgets/sender_message_card.dart';
 
-class ChatList extends ConsumerWidget {
+class ChatList extends ConsumerStatefulWidget {
   final String receiverUserId;
   const ChatList({
     Key? key,
@@ -14,9 +17,23 @@ class ChatList extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _ChatListState();
+}
+
+class _ChatListState extends ConsumerState<ChatList> {
+  final ScrollController messageController = ScrollController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    messageController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: ref.read(chatControllerProvider).chatStream(receiverUserId),
+        stream:
+            ref.read(chatControllerProvider).chatStream(widget.receiverUserId),
         builder: (
           context,
           snapshot,
@@ -24,18 +41,30 @@ class ChatList extends ConsumerWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Loader();
           }
+
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            messageController
+                .jumpTo(messageController.position.maxScrollExtent);
+          });
+
           return ListView.builder(
+              controller: messageController,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                if (messages[index]['isMe'] == true) {
+                final messageData = snapshot.data![index];
+                var timeSent = DateFormat.Hm().format(messageData.timeSent);
+                if (messageData.senderId ==
+                    FirebaseAuth.instance.currentUser!.uid) {
                   return MyMessageCard(
-                    message: messages[index]['text'].toString(),
-                    date: messages[index]['time'].toString(),
+                    message: messageData.text,
+                    date: timeSent,
+                    type: messageData.type,
                   );
                 }
                 return SenderMessageCard(
-                  message: messages[index]['text'].toString(),
-                  date: messages[index]['time'].toString(),
+                  message: messageData.text,
+                  date: timeSent,
+                  type: messageData.type,
                 );
               });
         });

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../common/widgets/loader.dart';
 import '../controller/chat_controller.dart';
-import '../../../info.dart';
 import '../../../colors.dart';
 import '../screens/mobile_chat_screen.dart';
 import '../../../models/chat_contact.dart';

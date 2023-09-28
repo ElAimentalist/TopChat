@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:topchat_ui/features/auth/controller/auth_controller.dart';
 import 'package:topchat_ui/features/chat/repositories/chat_repository.dart';
 import 'package:topchat_ui/models/chat_contact.dart';
 
+import '../../../common/enums/message_enums.dart';
 import '../../../models/message.dart';
 
 final chatControllerProvider = Provider((ref) {
@@ -24,7 +27,7 @@ class ChatController {
     return chatRepository.getChatContacts();
   }
 
-   Stream<List<Message>> chatStream(String receiverUserId) {
+  Stream<List<Message>> chatStream(String receiverUserId) {
     return chatRepository.getChatStream(receiverUserId);
   }
 
@@ -40,6 +43,43 @@ class ChatController {
             receiverUserId: receiverUserId,
             senderUser: value!,
           ),
+        );
+  }
+
+  void sendFileMessage(
+    BuildContext context,
+    File file,
+    String receiverUserId,
+    MessageEnum messageEnum,
+  ) {
+    ref.read(userDataAuthProvider).whenData(
+          (value) => chatRepository.sendFileMessage(
+            context: context,
+            file: file,
+            receiverUserId: receiverUserId,
+            senderUserData: value!,
+            messageEnum: messageEnum,
+            ref: ref,
+          ),
+        );
+  }
+
+  void sendGIFMessage(
+    BuildContext context,
+    String gifUrl,
+    String receiverUserId,
+  ) {
+    int gifUrlPartIndex = gifUrl.lastIndexOf('-') + 1;
+    String gifUrlPart = gifUrl.substring(gifUrlPartIndex); 
+    String newgifUrl = 'https://i.giphy.com/media/$gifUrlPart/200.gif';
+
+    ref.read(userDataAuthProvider).whenData(
+          (value) => chatRepository.sendGIFMessage(
+              context: context,
+              gifUrl: newgifUrl,
+              receiverUserId: receiverUserId,
+              senderUser: value!,
+              ),
         );
   }
 }

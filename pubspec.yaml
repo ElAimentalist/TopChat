@@ -47,6 +47,13 @@ dependencies:
   json_serializable: ^6.7.1
   uuid: ^3.0.7
   intl: ^0.18.1
+  cached_network_image: ^3.2.3
+  cached_video_player: ^2.0.4
+  emoji_picker_flutter: ^1.6.1
+  enough_giphy_flutter: ^0.4.1
+  flutter_sound: ^9.2.13
+  path_provider: ^2.1.1
+  permission_handler: ^11.0.0
 
 dev_dependencies:
   flutter_test:
