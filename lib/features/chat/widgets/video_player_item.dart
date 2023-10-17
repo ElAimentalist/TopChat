@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class VideoPlayerItem extends StatefulWidget {
   final String videoUrl;
-  VideoPlayerItem({required this.videoUrl});
+  const VideoPlayerItem({super.key, required this.videoUrl});
 
   @override
   State<VideoPlayerItem> createState() => _VideoPlayerItemState();

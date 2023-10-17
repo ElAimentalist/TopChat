@@ -2,12 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:topchat_ui/common/enums/message_enums.dart';
 import 'package:intl/intl.dart';
+import 'package:topchat_ui/common/providers/message_reply_provider.dart';
 import 'package:topchat_ui/features/chat/controller/chat_controller.dart';
-import '../../../common/widgets/loader.dart';
-import '../../../info.dart';
-import '../widgets/my_message_card.dart';
-import '../widgets/sender_message_card.dart';
+import 'package:topchat_ui/common/widgets/loader.dart';
+import 'package:topchat_ui/features/chat/widgets/my_message_card.dart';
+import 'package:topchat_ui/features/chat/widgets/sender_message_card.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String receiverUserId;
@@ -29,6 +30,19 @@ class _ChatListState extends ConsumerState<ChatList> {
     messageController.dispose();
   }
 
+   void onMessageSwipe(
+    String message,
+    bool isMe,
+    MessageEnum messageEnum,
+  ) {
+    ref.read(messageReplyProvider.state).update(
+          (state) => MessageReply(
+            message,
+            isMe,
+            messageEnum,
+          ),
+        );
+  }
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -59,6 +73,14 @@ class _ChatListState extends ConsumerState<ChatList> {
                     message: messageData.text,
                     date: timeSent,
                     type: messageData.type,
+                    repliedText: messageData.repliedMessage,
+                    username: messageData.repliedTo,
+                    repliedMessageType: messageData.repliedMessageType,
+                    onLeftSwipe: () => onMessageSwipe(
+                      messageData.text,
+                      true,
+                      messageData.type,
+                    ),
                   );
                 }
                 return SenderMessageCard(
