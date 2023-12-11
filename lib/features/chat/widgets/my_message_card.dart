@@ -12,6 +12,7 @@ class MyMessageCard extends StatelessWidget {
   final String repliedText;
   final String username;
   final MessageEnum repliedMessageType;
+  final bool isSeen;
 
   const MyMessageCard({
     Key? key,
@@ -22,10 +23,12 @@ class MyMessageCard extends StatelessWidget {
     required this.repliedText,
     required this.username,
     required this.repliedMessageType,
+    required this.isSeen,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isReplying = repliedText.isNotEmpty;
     return SwipeTo(
       onLeftSwipe: onLeftSwipe,
       child: Align(
@@ -36,7 +39,8 @@ class MyMessageCard extends StatelessWidget {
           ),
           child: Card(
             elevation: 1,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             color: messageColor,
             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             child: Stack(
@@ -55,9 +59,38 @@ class MyMessageCard extends StatelessWidget {
                           right: 5,
                           bottom: 25,
                         ),
-                  child: DisplayTextImageGIF(
-                    message: message,
-                    type: type,
+                  child: Column(
+                    children: [
+                      if (isReplying) ...[
+                        Text(
+                          username,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: backgroundColor.withOpacity(0.5),
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(
+                                5,
+                              ),
+                            ),
+                          ),
+                          child: DisplayTextImageGIF(
+                            message: repliedText,
+                            type: repliedMessageType,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                      ],
+                      DisplayTextImageGIF(
+                        message: message,
+                        type: type,
+                      ),
+                    ],
                   ),
                 ),
                 Positioned(
@@ -75,10 +108,10 @@ class MyMessageCard extends StatelessWidget {
                       const SizedBox(
                         width: 5,
                       ),
-                      const Icon(
-                        Icons.done_all,
+                      Icon(
+                        isSeen ? Icons.done_all : Icons.done,
                         size: 20,
-                        color: Colors.white60,
+                        color: isSeen ? Colors.blue : Colors.white60,
                       ),
                     ],
                   ),
@@ -90,6 +123,7 @@ class MyMessageCard extends StatelessWidget {
       ),
     );
   }
+}
 
 // @override
 // List<Object?> get props => [message, date, type, onLeftSwipe, repliedText, username, repliedMessageType];
@@ -103,6 +137,6 @@ class MyMessageCard extends StatelessWidget {
 // List<Object?> get props => [message, date, type, onLeftSwipe, repliedText, username, repliedMessageType];
 // }
 
-@override
-List<Object?> get props => [message, date, type, onLeftSwipe, repliedText, username, repliedMessageType];
-}
+// @override
+// List<Object?> get props => [message, date, type, onLeftSwipe, repliedText, username, repliedMessageType];
+ 

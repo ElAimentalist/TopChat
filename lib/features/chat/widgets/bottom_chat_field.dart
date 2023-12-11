@@ -16,9 +16,11 @@ import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 
 class BottomChatField extends ConsumerStatefulWidget {
   final String receiverUserId;
+  final bool isGroupChat;
   const BottomChatField({
     Key? key,
     required this.receiverUserId,
+    required this.isGroupChat,
   }) : super(key: key);
 
   @override
@@ -56,6 +58,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
             context,
             _messageController.text.trim(),
             widget.receiverUserId,
+            widget.isGroupChat,
           );
 
       setState(() {
@@ -91,6 +94,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
           file,
           widget.receiverUserId,
           messageEnum,
+          widget.isGroupChat,
         );
   }
 
@@ -115,6 +119,7 @@ class _BottomChatFieldState extends ConsumerState<BottomChatField> {
             context,
             gif.url,
             widget.receiverUserId,
+            widget.isGroupChat,
           );
     }
   }
